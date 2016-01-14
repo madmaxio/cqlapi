@@ -1,6 +1,17 @@
 [package]
 name = "cqlapi"
 version = "0.1.0"
-authors = ["root"]
+authors = ["maxim"]
+
+
 
 [dependencies]
+
+chrono = "*"
+simpleflake = "*"
+
+
+[dependencies.rustcql]
+
+#path = "/media/sf_src/srv/deps/rustcql"
+path = "../rustcql"
