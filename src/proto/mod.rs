@@ -43,7 +43,6 @@ pub struct FieldConf<'a> {
 // Rules:
 // fields with QueryType Storaged, Value, Substring must form a set without duplicates (check not implemented)
 // fields with QueryType Substring must be Field::Text(_) only (check not implemented)
-// fields in by_entity, by_many must form a set without duplicates (check not implemented)
 
 // (group id) f1 f2 ... fn                                  main
 // (group f1 id) f2 ... fn                                  Value
@@ -164,7 +163,7 @@ fn by_field_create_job<T>(conf: &Conf<T>, schema: &mut Schema, f: &Field) {
     // (group id) f1 f2 ... fn                                  main
     // (group f1 id) f2 ... fn                                  Value
     let field_name = f.unwrap();
-    let mut query = "create table ".to_string() + conf.name + "_by_" + field_name + " (group bigint,
+    let mut query = "create table ".to_string() + conf.name + "_by_field_" + field_name + " (group bigint,
         id bigint, created_at timestamp, updated_at timestamp,";
     match conf.fields {
         Some(ref f) => {
@@ -201,7 +200,7 @@ fn by_substring_create_job<T>(conf: &Conf<T>, schema: &mut Schema, f: &Field) {
 fn by_entity_create_job<T>(conf: &Conf<T>, schema: &mut Schema, entity_name: &str) {
     // (group id) f1 f2 ... fn                                  main
     // (group entity_id id) f1 f2 ... fn                        by_entity
-    let mut query = "create table ".to_string() + conf.name + "_by_" + entity_name
+    let mut query = "create table ".to_string() + conf.name + "_by_entity_" + entity_name
     + " (group bigint, entity bigint, id bigint, created_at timestamp, updated_at timestamp,";
     match conf.fields {
         Some(ref f) => {
@@ -224,7 +223,7 @@ fn by_entity_create_job<T>(conf: &Conf<T>, schema: &mut Schema, entity_name: &st
 fn by_many_create_job<T>(conf: &Conf<T>, schema: &mut Schema, entity_name: &str) {
     // (group id) f1 f2 ... fn                                  main
     // (group entity_id id row) f1 f2 ... fn                    by_many
-    let mut query = "create table ".to_string() + conf.name + "_by_" + entity_name
+    let mut query = "create table ".to_string() + conf.name + "_by_many_" + entity_name
     + " (group bigint,entity bigint,id bigint,row bigint,created_at timestamp,updated_at timestamp,";
     match conf.fields {
         Some(ref f) => {
@@ -270,7 +269,7 @@ fn by_field_insert_job<T>(conf: &Conf<T>, f: &Field, fields: &Vec<&FieldConf>, g
 
     let field_name = f.unwrap();
 
-    let mut query = "insert into test1.".to_string() + conf.name + "_by_" + field_name + " (group,id,";
+    let mut query = "insert into test1.".to_string() + conf.name + "_by_field_" + field_name + " (group,id,";
 
     if fields.len() != values.len() {
         panic!("fields and values count don't match");
@@ -346,7 +345,7 @@ fn by_field_insert_all_job<T>(conf: &Conf<T>, f: &Field, group: i64, id: i64, mu
 
     let field_name = f.unwrap();
 
-    let mut query = "insert into test1.".to_string() + conf.name + "_by_" + field_name + " (group,id,";
+    let mut query = "insert into test1.".to_string() + conf.name + "_by_field_" + field_name + " (group,id,";
 
     if let Some(ref f) = conf.fields {
 
@@ -428,7 +427,7 @@ fn by_field_delete_job<T>(conf: &Conf<T>, f: &Field, group: i64, id: i64, mut va
 
     let field_name = f.unwrap();
 
-    let mut query = "delete from test1.".to_string() + conf.name + "_by_"
+    let mut query = "delete from test1.".to_string() + conf.name + "_by_field_"
     + field_name + " where group = ? and " + field_name + " = ? and id = ?";
 
     //println!("{}", query);
