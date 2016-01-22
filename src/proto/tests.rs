@@ -25,20 +25,16 @@ pub struct Entity<'a> {
 fn get_entity<'a>() -> Entity<'a> {
     Entity {
         test1: FieldConf {
-            f: Field::Text("test1"),
-            qt: QueryType::Substring
+            f: Field::Text("test1"), qt: QueryType::Substring
         },
         test2: FieldConf {
-            f: Field::Datetime("test2"),
-            qt: QueryType::Value
+            f: Field::Datetime("test2"), qt: QueryType::Value
         },
         test3: FieldConf {
-            f: Field::Text("test3"),
-            qt: QueryType::Storaged
+            f: Field::Text("test3"), qt: QueryType::Storaged
         },
         test4: FieldConf {
-            f: Field::Double("test4"),
-            qt: QueryType::Value
+            f: Field::Double("test4"), qt: QueryType::Value
         }
     }
 }
@@ -48,8 +44,8 @@ pub fn get_conf<'a>() -> Conf<'a, Entity<'a>> {
     let e = get_entity();
 
     Conf {
+        e : get_entity(),
         name: "test",
-            e : get_entity(),
         fields: Some(vec![
             e.test1,
             e.test2,
@@ -66,23 +62,23 @@ pub fn get_conf<'a>() -> Conf<'a, Entity<'a>> {
 }
 
 #[test]
-fn get_entitiy_test() {
+fn test_get_entitiy() {
     let e = get_entity();
 }
 
 #[test]
-fn get_conf_test() {
+fn test_get_conf() {
     let c = get_conf();
 }
 
 #[test]
-fn get_schema_test() {
+fn test_get_schema() {
     let c = get_conf();
     let s = c.get_schema();
 }
 
 #[test]
-pub fn create_schema_test() {
+pub fn test_create_schema() {
 
     let mut conn = connect(HOST.to_string()).unwrap();
 
@@ -92,7 +88,7 @@ pub fn create_schema_test() {
 }
 
 #[test]
-fn insert_all_test() {
+fn test_insert_all() {
 
     let c = get_conf();
 

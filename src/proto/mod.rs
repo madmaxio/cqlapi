@@ -109,33 +109,6 @@ impl<'a> Field<'a> {
     }
 }
 
-/*
-pub fn prepare(conn: &mut Connection) ->Result<Vec<u8>, ()> {
-    let result = conn.prepare("
-		insert into test1.person_first_name_index (group, first_name_index, first_name) values (?, ?, ?)
-		".to_string());
-
-    if let Response::Result(result) = result.unwrap() {
-        if let ResultBody::Prepared(id) = result {
-            return Ok(id)
-        }
-    }
-
-    Err(())
-}
-
-pub fn add(prepared_id: Vec<u8>, group: i64, index: String, value: String) -> BatchQuery {
-    let mut values = vec![];
-
-    values.push(Column::Bigint(group));
-    values.push(Column::String(index));
-    values.push(Column::String(value));
-
-    BatchQuery::Prepared(prepared_id, values)
-}
-
-*/
-
 fn add_field(query: String, f: &Field) -> String {
     match f {
         &Field::Bigint(name) => query + name + " bigint,",
@@ -469,8 +442,10 @@ impl<'a, T> Conf<'a, T> {
     // (group entity_id id row) f1 f2 ... fn                    by_many
 
     pub fn create(&self, schema: &mut Schema) {
+
         let mut query = "create table ".to_string() + self.name + " (group bigint,
         id bigint, created_at timestamp, updated_at timestamp,";
+
         match self.fields {
             Some(ref f) => {
                 query = f.iter().fold(query, |query, x| {
@@ -480,6 +455,7 @@ impl<'a, T> Conf<'a, T> {
             }
             _ => {}
         }
+
         match self.by_entity {
             Some(ref fields) => {
                 for x in fields.iter() {
@@ -488,6 +464,7 @@ impl<'a, T> Conf<'a, T> {
             }
             _ => {}
         }
+
         match self.by_many {
             Some(ref fields) => {
                 for x in fields.iter() {
@@ -765,6 +742,33 @@ impl<'a, T> Conf<'a, T> {
 // (group id) f1 f2 ... fn                                  main
 // (group f1 id) f2 ... fn                                  Value
 
+
+/*
+pub fn prepare(conn: &mut Connection) ->Result<Vec<u8>, ()> {
+    let result = conn.prepare("
+		insert into test1.person_first_name_index (group, first_name_index, first_name) values (?, ?, ?)
+		".to_string());
+
+    if let Response::Result(result) = result.unwrap() {
+        if let ResultBody::Prepared(id) = result {
+            return Ok(id)
+        }
+    }
+
+    Err(())
+}
+
+pub fn add(prepared_id: Vec<u8>, group: i64, index: String, value: String) -> BatchQuery {
+    let mut values = vec![];
+
+    values.push(Column::Bigint(group));
+    values.push(Column::String(index));
+    values.push(Column::String(value));
+
+    BatchQuery::Prepared(prepared_id, values)
+}
+
+*/
 
 
 /*
