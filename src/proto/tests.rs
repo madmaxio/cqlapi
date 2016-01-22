@@ -29,7 +29,7 @@ fn get_entity<'a>() -> Entity<'a> {
             qt: QueryType::Substring
         },
         test2: FieldConf {
-            f: Field::Text("test2"),
+            f: Field::Datetime("test2"),
             qt: QueryType::Value
         },
         test3: FieldConf {

@@ -30,7 +30,8 @@ pub enum Field<'a> {
     Bigint(&'a str),
     Timestamp(&'a str),
     Text(&'a str),
-    Double(&'a str)
+    Double(&'a str),
+    Datetime(&'a str)
 }
 
 pub struct FieldConf<'a> {
@@ -93,7 +94,8 @@ impl<'a> Field<'a> {
             &Field::Bigint(name) => name,
             &Field::Timestamp(name) => name,
             &Field::Text(name) => name,
-            &Field::Double(name) => name
+            &Field::Double(name) => name,
+            &Field::Datetime(name) => name
         }
     }
     pub fn get_order(&self) -> &'a str  {
@@ -101,6 +103,7 @@ impl<'a> Field<'a> {
             &Field::Bigint(_) => "desc",
             &Field::Timestamp(_) => "desc",
             &Field::Text(_) => "asc",
+            &Field::Datetime(_) => "desc",
             _ => "asc"
         }
     }
@@ -138,7 +141,8 @@ fn add_field(query: String, f: &Field) -> String {
         &Field::Bigint(name) => query + name + " bigint,",
         &Field::Timestamp(name) => query + name + " timestamp,",
         &Field::Text(name) => query + name + " text,",
-        &Field::Double(name) => query + name + " double,"
+        &Field::Double(name) => query + name + " double,",
+        &Field::Datetime(name) => query + name + " text,"
     }
 }
 
