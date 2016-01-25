@@ -63,15 +63,14 @@ pub struct Schema {
     pub queries: Vec<String>
 }
 
-pub fn create_schema(conn: &mut Connection, context: Vec<Schema>) {
+pub fn create_schema(conn: &mut Connection, context: Vec<Schema>, replication_factor: u32) {
     let result = conn.query("DROP KEYSPACE IF EXISTS test1".to_string(), Consistency::Quorum);
     println!("Result of DROP KEYSPACE was {:?}", result);
 
     let query = "CREATE KEYSPACE test1
                WITH replication = {
                  'class' : 'SimpleStrategy',
-                 'replication_factor' : 1
-               }".to_string();
+                 'replication_factor' : ".to_string() + &replication_factor.to_string() + "}";
 
     let result = conn.query(query, Consistency::Quorum);
 
@@ -433,7 +432,14 @@ fn by_many_delete_job<T>(conf: &Conf<T>, schema: &mut Schema, entity_name: &str)
 
 }
 
-pub fn create_conf<'a, E: 'a>(name: &'a str, e: E, fields: Option<Vec<FieldConf<'a>>>,
+pub fn new_fc(f: Field, qt: QueryType) -> FieldConf {
+    FieldConf {
+        f: f,
+        qt: qt
+    }
+}
+
+pub fn new_conf<'a, E: 'a>(name: &'a str, e: E, fields: Option<Vec<FieldConf<'a>>>,
     by_entity: Option<Vec<&str>>, by_many: Option<Vec<&str>>) -> Conf<'a, E> {
     Conf {
         e : e,

@@ -24,18 +24,10 @@ pub struct Entity<'a> {
 
 fn get_entity<'a>() -> Entity<'a> {
     Entity {
-        test1: FieldConf {
-            f: Field::Text("test1"), qt: QueryType::Substring
-        },
-        test2: FieldConf {
-            f: Field::Datetime("test2"), qt: QueryType::Value
-        },
-        test3: FieldConf {
-            f: Field::Text("test3"), qt: QueryType::Storaged
-        },
-        test4: FieldConf {
-            f: Field::Double("test4"), qt: QueryType::Value
-        }
+        test1: new_fc(Field::Text("test1"), QueryType::Substring),
+        test2: new_fc(Field::Datetime("test2"), QueryType::Value),
+        test3: new_fc(Field::Text("test3"), QueryType::Storaged),
+        test4: new_fc(Field::Double("test4"), QueryType::Value)
     }
 }
 
@@ -43,7 +35,7 @@ pub fn get_conf<'a>() -> Conf<'a, Entity<'a>> {
 
     let e = get_entity();
 
-    create_conf("test", get_entity(),
+    new_conf("test", get_entity(),
         Some(vec![
              e.test1,
              e.test2,
@@ -78,7 +70,7 @@ pub fn test_create_schema() {
 
     create_schema(&mut conn, vec![
         get_conf().get_schema()
-    ]);
+    ], 1);
 }
 
 #[test]
