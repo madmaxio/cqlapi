@@ -43,22 +43,16 @@ pub fn get_conf<'a>() -> Conf<'a, Entity<'a>> {
 
     let e = get_entity();
 
-    Conf {
-        e : get_entity(),
-        name: "test",
-        fields: Some(vec![
-            e.test1,
-            e.test2,
-            e.test3,
-            e.test4
-        ]),
-        by_entity: Some(vec![
-            "test_union"
-        ]),
-        by_many: Some(vec![
-            "test_paper"
-        ])
-    }
+    create_conf("test", get_entity(),
+        Some(vec![
+             e.test1,
+             e.test2,
+             e.test3,
+             e.test4
+             ]),
+         Some(vec!["test_union"]),
+         Some(vec!["test_paper"]))
+
 }
 
 #[test]

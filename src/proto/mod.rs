@@ -433,6 +433,17 @@ fn by_many_delete_job<T>(conf: &Conf<T>, schema: &mut Schema, entity_name: &str)
 
 }
 
+pub fn create_conf<'a, E: 'a>(name: &'a str, e: E, fields: Option<Vec<FieldConf<'a>>>,
+    by_entity: Option<Vec<&str>>, by_many: Option<Vec<&str>>) -> Conf<'a, E> {
+    Conf {
+        e : e,
+        name: name,
+        fields: fields,
+        by_entity: None,
+        by_many: None
+    }
+}
+
 impl<'a, T> Conf<'a, T> {
 
     // (group id) f1 f2 ... fn                                  main
