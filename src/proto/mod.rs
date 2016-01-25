@@ -510,7 +510,7 @@ impl<'a, T> Conf<'a, T> {
 
         s
     }
-    fn get_batch_for_insert(&self, f: Vec<&FieldConf>, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
+    pub fn get_batch_for_insert(&self, f: Vec<&FieldConf>, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
 
         let mut batch = vec![];
 
@@ -576,7 +576,7 @@ impl<'a, T> Conf<'a, T> {
         let state = self.first_by_id(&mut conn, group, id);
         conn.execute_batch(self.get_batch_for_insert(f, group, id, values, state), consistency)
     }
-    fn get_batch_for_insert_all(&self, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
+    pub fn get_batch_for_insert_all(&self, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
 
         let mut batch = vec![];
 
