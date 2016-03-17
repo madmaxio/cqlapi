@@ -646,7 +646,7 @@ impl<'a, T> Conf<'a, T> {
         let state = self.first_by_id(&mut conn, group, id);
         conn.execute_batch(self.get_batch_for_insert_all(group, id, values, state), consistency)
     }
-    pub fn first(&self, conn: &mut Connection, fc: &FieldConf, group: i64, key: Column) -> Option<HashMap<String, Column>> {
+    pub fn first(&self, conn: &mut Connection, group: i64, fc: &FieldConf, key: Column) -> Option<HashMap<String, Column>> {
 
         match fc.qt {
             QueryType::Storaged => {}
@@ -659,7 +659,7 @@ impl<'a, T> Conf<'a, T> {
 
                 let field_name = fc.f.unwrap();
 
-                let query = "select * from test1.".to_string() + self.name + "_by_" + field_name + " where group = ? and " + field_name + " = ? limit 1";
+                let query = "select * from test1.".to_string() + self.name + "_by_field_" + field_name + " where group = ? and " + field_name + " = ? limit 1";
 
                 let result = conn.prm_query(query, values, Consistency::Quorum).unwrap();
 
