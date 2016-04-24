@@ -13,7 +13,9 @@ use rustcql::connect;
 
 use super::*;
 
-
+use proto::shared::*;
+use proto::conf::*;
+use proto::schema::*;
 
 pub struct Entity<'a> {
     pub test1: FieldConf<'a>,

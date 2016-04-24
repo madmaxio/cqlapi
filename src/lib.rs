@@ -5,7 +5,7 @@ extern crate rustcql;
 
 
 #[warn(missing_docs)]
-pub mod proto;
+mod proto;
 
 pub use rustcql::Connection;
 pub use rustcql::connect;
