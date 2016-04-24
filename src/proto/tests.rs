@@ -65,6 +65,7 @@ fn test_get_schema() {
     let s = c.get_schema();
 }
 
+#[ignore]
 #[test]
 pub fn test_create_schema() {
 

@@ -98,7 +98,22 @@ impl<'a, T> Conf<'a, T> {
 
         s
     }
-    pub fn get_batch_for_insert(&self, f: Vec<&FieldConf>, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
+    pub fn insert(&self, mut conn: &mut Connection, group: i64, id: i64, f_v: Vec<(&FieldConf, Column)>, consistency: Consistency) -> Result<Response> {
+        let state = self.first_by_id(&mut conn, group, id);
+
+        let mut f = vec![];
+
+        let mut values = vec![];
+
+
+        for &(fc, ref v) in f_v.iter() {
+            f.push(fc);
+            values.push(v.clone());
+        }
+
+        conn.execute_batch(self.get_batch_for_insert(group, id, f, values, state), consistency)
+    }
+    pub fn get_batch_for_insert(&self, group: i64, id: i64, f: Vec<&FieldConf>, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
 
         let mut batch = vec![];
 
@@ -160,9 +175,9 @@ impl<'a, T> Conf<'a, T> {
 
         batch
     }
-    pub fn insert(&self, mut conn: &mut Connection, f: Vec<&FieldConf>, group: i64, id: i64, mut values: Vec<Column>, consistency: Consistency) -> Result<Response> {
+    pub fn insert_all(&self, mut conn: &mut Connection, group: i64, id: i64, mut values: Vec<Column>, consistency: Consistency) -> Result<Response> {
         let state = self.first_by_id(&mut conn, group, id);
-        conn.execute_batch(self.get_batch_for_insert(f, group, id, values, state), consistency)
+        conn.execute_batch(self.get_batch_for_insert_all(group, id, values, state), consistency)
     }
     pub fn get_batch_for_insert_all(&self, group: i64, id: i64, mut values: Vec<Column>, state: Option<HashMap<String, Column>>) -> Vec<BatchQuery> {
 
@@ -229,10 +244,6 @@ impl<'a, T> Conf<'a, T> {
         batch.push(BatchQuery::SimpleWithParams(query, values));
 
         batch
-    }
-    pub fn insert_all(&self, mut conn: &mut Connection, group: i64, id: i64, mut values: Vec<Column>, consistency: Consistency) -> Result<Response> {
-        let state = self.first_by_id(&mut conn, group, id);
-        conn.execute_batch(self.get_batch_for_insert_all(group, id, values, state), consistency)
     }
     pub fn first(&self, conn: &mut Connection, group: i64, fc: &FieldConf, key: Column) -> Option<HashMap<String, Column>> {
 
