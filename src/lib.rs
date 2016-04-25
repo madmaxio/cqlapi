@@ -18,5 +18,10 @@ pub use rustcql::shared::BatchQuery;
 pub use rustcql::shared::Column;
 
 pub use proto::shared::*;
-pub use proto::conf::*;
 pub use proto::schema::*;
+pub use proto::conf::*;
+pub use proto::conf::conf_schema::*;
+pub use proto::conf::conf_create::*;
+pub use proto::conf::conf_insert::*;
+pub use proto::conf::conf_first::*;
+pub use proto::conf::conf_list::*;
