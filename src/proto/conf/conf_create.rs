@@ -32,7 +32,7 @@ impl<'a, T> Conf<'a, T> {
     pub fn create(&self, schema: &mut Schema) {
 
         let mut query = "create table ".to_string() + self.name + " (group bigint,
-        id bigint, created_at timestamp, updated_at timestamp,";
+        id bigint,";
 
         match self.fields {
             Some(ref f) => {

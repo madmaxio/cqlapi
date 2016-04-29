@@ -21,15 +21,19 @@ pub struct Entity<'a> {
     pub test1: FieldConf<'a>,
     pub test2: FieldConf<'a>,
     pub test3: FieldConf<'a>,
-    pub test4: FieldConf<'a>
+    pub test4: FieldConf<'a>,
+    pub timestamp_test1: FieldConf<'a>,
+    pub timestamp_test2: FieldConf<'a>
 }
 
 fn get_entity<'a>() -> Entity<'a> {
     Entity {
         test1: new_fc(Field::Text("test1"), QueryType::Substring),
-        test2: new_fc(Field::Datetime("test2"), QueryType::Value),
+        test2: new_fc(Field::Timestamp("test2"), QueryType::Value),
         test3: new_fc(Field::Text("test3"), QueryType::Storaged),
-        test4: new_fc(Field::Double("test4"), QueryType::Value)
+        test4: new_fc(Field::Double("test4"), QueryType::Value),
+        timestamp_test1: new_fc(Field::Timestamp("timestamp_test1"), QueryType::Value),
+        timestamp_test2: new_fc(Field::Timestamp("timestamp_test2"), QueryType::Value)
     }
 }
 
@@ -42,7 +46,9 @@ pub fn get_conf<'a>() -> Conf<'a, Entity<'a>> {
              e.test1,
              e.test2,
              e.test3,
-             e.test4
+             e.test4,
+             e.timestamp_test1,
+             e.timestamp_test2
              ]),
          Some(vec!["test_union"]),
          Some(vec!["test_paper"]))
@@ -81,15 +87,15 @@ fn test_insert_all() {
 
     let c = get_conf();
 
-    let now = UTC::now().to_rfc3339();
-
     let mut conn = connect(HOST.to_string()).unwrap();
 
     c.insert_all(&mut conn, 1, 1, vec![
         Column::String("asd".to_string()),
-        Column::String(now.clone()),
+        now(),
         Column::String("qwe".to_string()),
-        Column::Double(1.333333)
+        Column::Double(1.333333),
+        now(),
+        now()
     ], Quorum);
 
     let r = c.first_by_id(&mut conn, 1, 1).unwrap();

@@ -1,3 +1,6 @@
+use chrono::*;
+use rustcql::shared::Column;
+
 // Rules:
 // fields with QueryType Storaged, Value, Substring must form a set without duplicates (check not implemented)
 // fields with QueryType Substring must be Field::Text(_) only (check not implemented)
@@ -13,6 +16,10 @@
 //pub static HOST: &'static str = "10.0.2.15:9042";
 pub static HOST: &'static str = "127.0.0.1:9042";
 
+pub fn now() -> Column {
+    Column::Timestamp(UTC::now().timestamp() * 1000 + (UTC::now().nanosecond() / 1000000) as i64)
+}
+
 
 pub enum QueryType {
     Storaged,
@@ -24,8 +31,7 @@ pub enum Field<'a> {
     Bigint(&'a str),
     Timestamp(&'a str),
     Text(&'a str),
-    Double(&'a str),
-    Datetime(&'a str)
+    Double(&'a str)
 }
 
 pub struct FieldConf<'a> {
@@ -46,8 +52,7 @@ impl<'a> Field<'a> {
             &Field::Bigint(name) => name,
             &Field::Timestamp(name) => name,
             &Field::Text(name) => name,
-            &Field::Double(name) => name,
-            &Field::Datetime(name) => name
+            &Field::Double(name) => name
         }
     }
     pub fn get_order(&self) -> &'a str  {
@@ -55,7 +60,6 @@ impl<'a> Field<'a> {
             &Field::Bigint(_) => "desc",
             &Field::Timestamp(_) => "desc",
             &Field::Text(_) => "asc",
-            &Field::Datetime(_) => "desc",
             _ => "asc"
         }
     }
@@ -66,7 +70,6 @@ pub fn add_field(query: String, f: &Field) -> String {
         &Field::Bigint(name) => query + name + " bigint,",
         &Field::Timestamp(name) => query + name + " timestamp,",
         &Field::Text(name) => query + name + " text,",
-        &Field::Double(name) => query + name + " double,",
-        &Field::Datetime(name) => query + name + " text,"
+        &Field::Double(name) => query + name + " double,"
     }
 }
