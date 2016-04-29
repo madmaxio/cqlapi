@@ -54,7 +54,7 @@ impl<'a, T> Conf<'a, T> {
             }
 
             for i in 0..f.len() {
-                let c = state.get(f[i].f.unwrap()).unwrap();
+                let c = state.get(f[i].f.get_name()).unwrap();
                 if *c != values[i] {
                     if let Some(bq) = field_delete_job(self, &f[i], group, id, values.clone(), state.clone(), c.clone()) {
                         batch.push(bq);
@@ -76,7 +76,7 @@ impl<'a, T> Conf<'a, T> {
             if let Some(bq) = field_insert_job(self, x, &f, group, id, values.clone()) {
                 batch.push(bq);
             }
-            query + &x.f.unwrap() + ","
+            query + &x.f.get_name() + ","
         });
 
         let len = query.len();
@@ -122,7 +122,7 @@ impl<'a, T> Conf<'a, T> {
                 }
 
                 for i in 0..f.len() {
-                    let c = state.get(f[i].f.unwrap()).unwrap();
+                    let c = state.get(f[i].f.get_name()).unwrap();
                     if *c != values[i] {
                         if let Some(bq) = field_delete_job(self, &f[i], group, id, values.clone(), state.clone(), c.clone()) {
                             batch.push(bq);
@@ -145,7 +145,7 @@ impl<'a, T> Conf<'a, T> {
                 if let Some(bq) = field_insert_all_job(self, x, group, id, values.clone()) {
                     batch.push(bq);
                 }
-                query + &x.f.unwrap() + ","
+                query + &x.f.get_name() + ","
             });
         }
 

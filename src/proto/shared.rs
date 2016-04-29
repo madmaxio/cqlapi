@@ -47,7 +47,7 @@ pub fn new_fc(f: Field, qt: QueryType) -> FieldConf {
 }
 
 impl<'a> Field<'a> {
-    pub fn unwrap(&self) -> &'a str  {
+    pub fn get_name(&self) -> &'a str  {
         match self {
             &Field::Bigint(name) => name,
             &Field::Timestamp(name) => name,

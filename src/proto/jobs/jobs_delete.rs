@@ -42,7 +42,7 @@ pub fn by_field_delete_job<T>(conf: &Conf<T>, f: &Field, group: i64, id: i64, mu
     // (group id) f1 f2 ... fn                                  main
     // (group f1 id) f2 ... fn                                  Value
 
-    let field_name = f.unwrap();
+    let field_name = f.get_name();
 
     let mut query = "delete from test1.".to_string() + conf.name + "_by_field_"
     + field_name + " where group = ? and " + field_name + " = ? and id = ?";

@@ -41,7 +41,7 @@ pub fn by_field_insert_all_job<T>(conf: &Conf<T>, f: &Field, group: i64, id: i64
     // (group id) f1 f2 ... fn                                  main
     // (group f1 id) f2 ... fn                                  Value
 
-    let field_name = f.unwrap();
+    let field_name = f.get_name();
 
     let mut query = "insert into test1.".to_string() + conf.name + "_by_field_" + field_name + " (group,id,";
 
@@ -52,7 +52,7 @@ pub fn by_field_insert_all_job<T>(conf: &Conf<T>, f: &Field, group: i64, id: i64
         }
 
         query = f.iter().fold(query, |query, x| {
-            query + &x.f.unwrap() + ","
+            query + &x.f.get_name() + ","
         });
     }
 

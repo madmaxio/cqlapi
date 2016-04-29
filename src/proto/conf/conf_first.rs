@@ -40,7 +40,7 @@ impl<'a, T> Conf<'a, T> {
                 values.push(Column::Bigint(group));
                 values.push(key);
 
-                let field_name = fc.f.unwrap();
+                let field_name = fc.f.get_name();
 
                 let query = "select * from test1.".to_string() + self.name + "_by_field_" + field_name + " where group = ? and " + field_name + " = ? limit 1";
 

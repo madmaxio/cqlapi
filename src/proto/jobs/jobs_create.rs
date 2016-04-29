@@ -39,7 +39,7 @@ pub fn storaged_create_job<T>(conf: &Conf<T>, schema: &mut Schema, f: &Field) {
 pub fn by_field_create_job<T>(conf: &Conf<T>, schema: &mut Schema, f: &Field) {
     // (group id) f1 f2 ... fn                                  main
     // (group f1 id) f2 ... fn                                  Value
-    let field_name = f.unwrap();
+    let field_name = f.get_name();
     let mut query = "create table ".to_string() + conf.name + "_by_field_" + field_name + " (group bigint,
         id bigint, created_at timestamp, updated_at timestamp,";
     match conf.fields {
@@ -64,7 +64,7 @@ pub fn by_substring_create_job<T>(conf: &Conf<T>, schema: &mut Schema, f: &Field
     // (group id) f1 f2 ... fn                                  main
     // (group f1 id) f2 ... fn + (group f1_substring f1)        Substring
 
-    let field_name = f.unwrap();
+    let field_name = f.get_name();
     let mut query = "create table ".to_string()
     + conf.name + "_" + field_name
     + "_substring (group bigint,substring text,value text, primary key (group,substring,value)) with gc_grace_seconds = 86400";
