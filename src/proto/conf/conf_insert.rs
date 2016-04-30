@@ -29,6 +29,34 @@ use proto::schema::Schema;
 // (group entity_id id row) f1 f2 ... fn                    by_many
 
 impl<'a, T> Conf<'a, T> {
+    pub fn insert_hashmap(&self, mut conn: &mut Connection, group: i64, id: i64, hashmap: HashMap<String, Column>, extra_fields: Option<Vec<(&FieldConf, Column)>>, consistency: Consistency ) -> Result<Response> {
+
+        let mut f: Vec<&FieldConf> = vec![];
+        let mut values: Vec<Column> = vec![];
+
+
+        if let Some(ref field_confs) = self.fields {
+
+            for (k, v) in hashmap.iter() {
+                if let Some(fc) = field_confs.iter().find(|&p| p.f.get_name() == k) {
+                    f.push(fc);
+                    values.push(v.clone());
+                }
+            }
+
+        }
+
+        if let Some(ef) = extra_fields {
+            for &(fc, ref v) in ef.iter() {
+                f.push(fc);
+                values.push(v.clone());
+            }
+        }
+
+        let state = self.first_by_id(&mut conn, group, id);
+
+        conn.execute_batch(self.get_batch_for_insert(group, id, f, values, state), consistency)
+    }
     pub fn insert(&self, mut conn: &mut Connection, group: i64, id: i64, f_v: Vec<(&FieldConf, Column)>, consistency: Consistency) -> Result<Response> {
         let state = self.first_by_id(&mut conn, group, id);
 
