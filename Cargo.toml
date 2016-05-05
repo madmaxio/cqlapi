@@ -9,9 +9,8 @@ authors = ["maxim"]
 
 chrono = "*"
 simpleflake = "*"
-#rustcql = "*"
+rustcql = "*"
 
-[dependencies.rustcql]
+#[dependencies.rustcql]
 
-#path = "/media/sf_src/srv/deps/rustcql"
-path = "../rustcql"
+#path = "../rustcql"

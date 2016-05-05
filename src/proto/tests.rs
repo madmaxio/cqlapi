@@ -82,6 +82,7 @@ pub fn test_create_schema() {
     ], 1);
 }
 
+#[ignore]
 #[test]
 fn test_insert_all() {
 
