@@ -51,7 +51,7 @@ impl<'a, T> Conf<'a, T> {
                 match result {
                     Response::Result(rb) => {
                         match rb {
-                            ResultBody::Rows(rows) => {
+                            ResultBody::Rows(rows, paging_state) => {
                                 if rows.len() > 0 {
                                     return Some(rows[0].columns.clone())
                                 }
@@ -83,7 +83,7 @@ impl<'a, T> Conf<'a, T> {
         match result {
             Response::Result(rb) => {
                 match rb {
-                    ResultBody::Rows(rows) => {
+                    ResultBody::Rows(rows, paging_state) => {
                         if rows.len() > 0 {
                             return Some(rows[0].columns.clone())
                         }

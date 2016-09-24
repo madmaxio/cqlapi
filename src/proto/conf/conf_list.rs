@@ -56,7 +56,7 @@ impl<'a, T> Conf<'a, T> {
         match result {
             Response::Result(rb) => {
                 match rb {
-                    ResultBody::Rows(rows) => {
+                    ResultBody::Rows(rows, paging_state) => {
                         for row in rows.iter() {
                             res.push(row.columns.clone());
                         }
