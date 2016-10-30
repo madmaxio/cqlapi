@@ -71,7 +71,7 @@ fn test_get_schema() {
     let s = c.get_schema();
 }
 
-#[ignore]
+//#[ignore]
 #[test]
 pub fn test_create_schema() {
 
@@ -82,7 +82,7 @@ pub fn test_create_schema() {
     ], 1);
 }
 
-#[ignore]
+//#[ignore]
 #[test]
 fn test_insert_all() {
 
